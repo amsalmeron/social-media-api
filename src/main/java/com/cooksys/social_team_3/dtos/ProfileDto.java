@@ -10,7 +10,7 @@ public class ProfileDto {
     private String firstName;
 
     private String lastName;
-
+// Only the email property is required.
     private String email;
 
     private String phone;
