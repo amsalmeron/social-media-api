@@ -9,5 +9,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class HashtagServiceImpl implements HashtagService {
-	
+
 }
