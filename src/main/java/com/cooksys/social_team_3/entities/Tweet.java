@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Tweet {
-
+	
 	@Id
     @GeneratedValue
     private Long id;
