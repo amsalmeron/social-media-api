@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
     //Helpers
     private User checkUsername(String username) {
-        Optional<User> user = userRepository.findByCredentialsUsername(username);
+        Optional<User> user = userRepository.findByCredentials_Username(username);
         if (user.isPresent()) {
             return user.get();
         } else {
