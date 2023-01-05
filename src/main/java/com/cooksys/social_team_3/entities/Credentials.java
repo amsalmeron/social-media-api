@@ -1,11 +1,8 @@
 package com.cooksys.social_team_3.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
