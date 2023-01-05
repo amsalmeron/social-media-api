@@ -19,6 +19,21 @@ public class ValidateServiceImpl implements ValidateService{
     private final HashtagRepository hashtagRepository;
     private final UserRepository userRepository;
 
+	//Endpoint #45 mhu
+	@Override
+	public boolean usernameIsAvailable(String username) {
+
+		List<User> allUsers = userRepository.findAll();
+		for (User user : allUsers) {
+			if(user.getCredentials().getUsername().equals(username)) { 
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+    //Endpoint #46 mhu
     @Override
 	public boolean usernameExists(String username) {
 
@@ -32,6 +47,7 @@ public class ValidateServiceImpl implements ValidateService{
 		return false;
 	}
 
+    //Endpoint #47 mhu
 	@Override
 	public boolean hashtagExists(String label) {
 
@@ -44,17 +60,5 @@ public class ValidateServiceImpl implements ValidateService{
 		
 		return false;
 	}
-
-	@Override
-	public boolean usernameIsAvailable(String username) {
-
-		List<User> allUsers = userRepository.findAll();
-		for (User user : allUsers) {
-			if(user.getCredentials().getUsername().equals(username)) { 
-				return false;
-			}
-		}
-		
-		return true;
-	}
+	
 }
