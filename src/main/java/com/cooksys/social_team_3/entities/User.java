@@ -1,5 +1,7 @@
 package com.cooksys.social_team_3.entities;
 
+import com.cooksys.social_team_3.services.Deletables;
+
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -23,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Table(name = "user_table")
-public class User {
+public class User implements Deletables {
 
     @Id
     @GeneratedValue

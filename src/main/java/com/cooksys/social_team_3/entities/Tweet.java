@@ -1,7 +1,6 @@
 package com.cooksys.social_team_3.entities;
 
-import java.sql.Timestamp;
-import java.util.List;
+import com.cooksys.social_team_3.services.Deletables;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,15 +12,17 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Data
-public class Tweet {
+public class Tweet implements Deletables {
 	
 	@Id
     @GeneratedValue
