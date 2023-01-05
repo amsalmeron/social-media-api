@@ -1,6 +1,18 @@
 package com.cooksys.social_team_3.services;
 
 import com.cooksys.social_team_3.dtos.CredentialsDto;
+
+import com.cooksys.social_team_3.dtos.ProfileDto;
+import com.cooksys.social_team_3.entities.User;
+
+public interface UserService {
+
+	UserResponseDto updateUser(String username, CredentialsDto credentialsDto, ProfileDto profileDto);
+
+	UserResponseDto deleteUser(String username, CredentialsDto credentialsDto);
+
+	User getUser(String username);
+
 import com.cooksys.social_team_3.dtos.TweetResponseDto;
 import com.cooksys.social_team_3.dtos.UserRequestDto;
 import com.cooksys.social_team_3.dtos.UserResponseDto;
@@ -28,5 +40,6 @@ public interface UserService {
     void followUser(CredentialsDto credentialsDto, String username);
 
     void unfollowUser(CredentialsDto credentialsDto, String username);
+
 
 }
