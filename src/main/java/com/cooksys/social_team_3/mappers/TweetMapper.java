@@ -1,10 +1,11 @@
 package com.cooksys.social_team_3.mappers;
 
-import com.cooksys.social_team_3.dtos.TweetResponseDto;
-import com.cooksys.social_team_3.entities.Tweet;
+import java.util.List;
+
 import org.mapstruct.Mapper;
 
-import java.util.List;
+import com.cooksys.social_team_3.entities.Tweet;
+import com.cooksys.social_team_3.dtos.TweetResponseDto;
 
 @Mapper(componentModel = "spring", uses = { UserMapper.class })
 public interface TweetMapper {
