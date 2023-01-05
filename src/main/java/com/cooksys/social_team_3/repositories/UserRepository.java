@@ -12,7 +12,7 @@ import com.cooksys.social_team_3.entities.Credentials;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  List<User> findAllByDeleted(boolean deleted);
+        List<User> findAllByDeleted(boolean deleted);
 
 	Optional<User> findByCredentials_Username(String username);
 
