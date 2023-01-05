@@ -62,12 +62,12 @@ public class UserServiceImpl implements UserService {
 
     @Override //GET users/@{username}/mentions
     public List<TweetResponseDto> getMentions(String username) {
-        return tweetMapper.entitiesToDto(newestToOldest(removeDeleted(checkUsername(username).getMentions())));
+        return tweetMapper.entitiesToDtos(newestToOldest(removeDeleted(checkUsername(username).getMentions())));
     }
 
     @Override //GET users/@{username}/tweets
     public List<TweetResponseDto> getUsernameTweets(String username) {
-        return tweetMapper.entitiesToDto(newestToOldest(removeDeleted(checkUsername(username).getTweets())));
+        return tweetMapper.entitiesToDtos(newestToOldest(removeDeleted(checkUsername(username).getTweets())));
     }
 
     @Override //GET users/@{username}/feed
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
         for (User followed : following) {
             tweets.addAll(removeDeleted(followed.getTweets()));
         }
-        return tweetMapper.entitiesToDto(newestToOldest(tweets));
+        return tweetMapper.entitiesToDtos(newestToOldest(tweets));
     }
 
     @Override
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
     //Helpers
     private User checkUsername(String username) {
-        Optional<User> user = userRepository.findByCredentialsUsername(username);
+        Optional<User> user = userRepository.findByCredentials_Username(username);
         if (user.isPresent()) {
             return user.get();
         } else {

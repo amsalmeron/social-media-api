@@ -9,6 +9,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = { UserMapper.class })
 public interface TweetMapper {
 
-    List<TweetResponseDto> entitiesToDto(List<Tweet> all);
-
+	List<TweetResponseDto> entitiesToDtos(List<Tweet> tweet);
+	
 }
