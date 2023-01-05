@@ -1,16 +1,14 @@
 package com.cooksys.social_team_3.services.impl;
 
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-import com.cooksys.social_team_3.services.ValidateService;
 import com.cooksys.social_team_3.entities.Hashtag;
 import com.cooksys.social_team_3.entities.User;
 import com.cooksys.social_team_3.repositories.HashtagRepository;
 import com.cooksys.social_team_3.repositories.UserRepository;
-
+import com.cooksys.social_team_3.services.ValidateService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service

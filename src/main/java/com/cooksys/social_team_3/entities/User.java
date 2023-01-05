@@ -1,6 +1,7 @@
 package com.cooksys.social_team_3.entities;
 
 import com.cooksys.social_team_3.services.Deletables;
+
 import java.sql.Timestamp;
 import java.util.List;
 
