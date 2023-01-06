@@ -15,6 +15,8 @@ import com.cooksys.social_team_3.entities.User;
 public interface UserMapper {
 
     List<UserResponseDto> entitiesDto(List<User> users);
+    
+    List<UserResponseDto> entitiesToDtos(List<User> users);
 
     @Mapping(target = "username", source = "credentials.username")
     UserResponseDto entityToResponseDto(User user);

@@ -1,7 +1,13 @@
 package com.cooksys.social_team_3.controllers;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.cooksys.social_team_3.services.HashtagService;
+import com.cooksys.social_team_3.dtos.HashtagDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -10,4 +16,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/tags")
 public class HashtagController {
 
+	private final HashtagService hashtagService;
+	
+	@GetMapping
+	public List<HashtagDto> getAllHashtags() {
+		return hashtagService.getAllHashtags();
+	}
+	
 }
