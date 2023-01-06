@@ -14,4 +14,5 @@ public interface HashtagMapper {
 	
 	Hashtag requestDtoToEntity(String hashtag);
 		
+	HashtagDto entityToDto(Hashtag hashtag);
 }

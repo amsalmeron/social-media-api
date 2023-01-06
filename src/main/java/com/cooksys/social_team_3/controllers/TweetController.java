@@ -14,6 +14,9 @@ import com.cooksys.social_team_3.dtos.TweetRequestDto;
 import com.cooksys.social_team_3.dtos.TweetResponseDto;
 import com.cooksys.social_team_3.dtos.UserRequestDto;
 import com.cooksys.social_team_3.services.TweetService;
+import com.cooksys.social_team_3.dtos.HashtagDto;
+import com.cooksys.social_team_3.dtos.UserResponseDto;
+import com.cooksys.social_team_3.dtos.ContextDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -60,5 +63,35 @@ public class TweetController {
 	@DeleteMapping("/{id}")
 	public TweetResponseDto deleteTweet(@PathVariable Long id, @RequestBody UserRequestDto userRequestDto) {
 		return tweetService.deleteTweet(id, userRequestDto);
+	}
+	
+	@GetMapping
+    public List<TweetResponseDto> getAllTweets() {
+        return tweetService.getAllActiveTweets();
+    }
+	
+	@GetMapping("/{id}/tags")
+	public List<HashtagDto> getAllTagsForTweet(@PathVariable Long id) {
+		return tweetService.getAllTagsForTweet(id);
+	}
+	
+	@GetMapping("/{id}/replies")
+	public List<TweetResponseDto> getReplyToTweetById(@PathVariable Long id) {
+		return tweetService.getRepliesToTweetById(id);
+	}
+	
+	@GetMapping("/{id}/likes")
+	public List<UserResponseDto> getLikesForTweet(@PathVariable Long id) {
+		return tweetService.getLikesForTweet(id);
+	}
+	
+	@GetMapping("/{id}/mentions")
+	public List<UserResponseDto> getMentionsInTweetById(@PathVariable Long id) {
+		return tweetService.getMentionsInTweetById(id);
+	}
+	
+	@GetMapping("/{id}/context")
+	public ContextDto getContextForTweet(@PathVariable Long id) {
+		return tweetService.getContextForTweet(id);
 	}
 }
