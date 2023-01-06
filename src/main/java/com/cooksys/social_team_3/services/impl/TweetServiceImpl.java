@@ -6,10 +6,13 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.cooksys.social_team_3.dtos.ContextDto;
 import com.cooksys.social_team_3.dtos.CredentialsDto;
+import com.cooksys.social_team_3.dtos.HashtagDto;
 import com.cooksys.social_team_3.dtos.TweetRequestDto;
 import com.cooksys.social_team_3.dtos.TweetResponseDto;
 import com.cooksys.social_team_3.dtos.UserRequestDto;
+import com.cooksys.social_team_3.dtos.UserResponseDto;
 import com.cooksys.social_team_3.entities.Credentials;
 import com.cooksys.social_team_3.entities.Hashtag;
 import com.cooksys.social_team_3.entities.Tweet;
@@ -17,20 +20,13 @@ import com.cooksys.social_team_3.entities.User;
 import com.cooksys.social_team_3.exceptions.BadRequestException;
 import com.cooksys.social_team_3.exceptions.NotFoundException;
 import com.cooksys.social_team_3.mappers.CredentialsMapper;
-import com.cooksys.social_team_3.mappers.TweetMapper;
-import com.cooksys.social_team_3.repositories.TweetRepository;
-import com.cooksys.social_team_3.services.TweetService;
-
-import com.cooksys.social_team_3.services.UserService;
 import com.cooksys.social_team_3.mappers.HashtagMapper;
-import com.cooksys.social_team_3.entities.Hashtag;
-import com.cooksys.social_team_3.dtos.HashtagDto;
-import com.cooksys.social_team_3.entities.User;
-import com.cooksys.social_team_3.dtos.UserResponseDto;
+import com.cooksys.social_team_3.mappers.TweetMapper;
 import com.cooksys.social_team_3.mappers.UserMapper;
+import com.cooksys.social_team_3.repositories.TweetRepository;
 import com.cooksys.social_team_3.repositories.UserRepository;
-import com.cooksys.social_team_3.dtos.ContextDto;
-
+import com.cooksys.social_team_3.services.TweetService;
+import com.cooksys.social_team_3.services.UserService;
 
 import lombok.RequiredArgsConstructor;
 

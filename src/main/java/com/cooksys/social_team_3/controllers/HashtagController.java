@@ -20,8 +20,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/tags")
 public class HashtagController {
 	
-	private final HashtagService hashtagService;
-	
 	@GetMapping("/{hashtag}")
 	public List<TweetResponseDto> getHashtagTweets(@PathVariable String hashtag) {
 		return hashtagService.getHashtagTweets(hashtag);
