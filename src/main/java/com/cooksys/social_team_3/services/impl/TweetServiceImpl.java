@@ -6,15 +6,22 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.cooksys.social_team_3.dtos.CredentialsDto;
 import com.cooksys.social_team_3.dtos.TweetRequestDto;
 import com.cooksys.social_team_3.dtos.TweetResponseDto;
+import com.cooksys.social_team_3.dtos.UserRequestDto;
 import com.cooksys.social_team_3.entities.Credentials;
+import com.cooksys.social_team_3.entities.Hashtag;
 import com.cooksys.social_team_3.entities.Tweet;
+import com.cooksys.social_team_3.entities.User;
 import com.cooksys.social_team_3.exceptions.BadRequestException;
 import com.cooksys.social_team_3.exceptions.NotFoundException;
+import com.cooksys.social_team_3.mappers.CredentialsMapper;
 import com.cooksys.social_team_3.mappers.TweetMapper;
 import com.cooksys.social_team_3.repositories.TweetRepository;
 import com.cooksys.social_team_3.services.TweetService;
+
+import com.cooksys.social_team_3.services.UserService;
 import com.cooksys.social_team_3.mappers.HashtagMapper;
 import com.cooksys.social_team_3.entities.Hashtag;
 import com.cooksys.social_team_3.dtos.HashtagDto;
@@ -24,6 +31,7 @@ import com.cooksys.social_team_3.mappers.UserMapper;
 import com.cooksys.social_team_3.repositories.UserRepository;
 import com.cooksys.social_team_3.dtos.ContextDto;
 
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -31,10 +39,16 @@ import lombok.RequiredArgsConstructor;
 public class TweetServiceImpl implements TweetService {
 	
 	private final TweetRepository tweetRepository;
+	private final UserRepository userRepository;
+ 
+	private final UserService userService;
+	
 	private final TweetMapper tweetMapper;
+	private final CredentialsMapper credentialsMapper;
 	private final HashtagMapper hashtagMapper;
 	private final UserMapper userMapper;
-	private final UserRepository userRepository;
+	
+
 	
 	@Override
 	public Tweet getTweet(Long id) {
@@ -68,16 +82,6 @@ public class TweetServiceImpl implements TweetService {
 		}
 		return tweetMapper.entityToDto(currentTweet);
 	}
-	
-//  POST Tweet postoned
-	@Override
-	public TweetResponseDto createTweet(TweetRequestDto tweetRequestDto) {
-//		if (userRepository.findByCredentials_Username(tweetRequestDto.getCredentials().getUsername()) != null 
-//				&& 
-//				userRepository.findByCredentials_Username(tweetRequestDto.getCredentials().getPassword() == tweetRequestDto.getCredentials().getPassword()
-//						)
-		return null;
-	}
 
 	@Override
 	public List<TweetResponseDto> getTweetRepostsById(Long id) {
@@ -95,18 +99,58 @@ public class TweetServiceImpl implements TweetService {
 	}
 
 	@Override
-	public TweetResponseDto deleteTweet(Long id, Credentials credentials) {
+	public TweetResponseDto deleteTweet(Long id, UserRequestDto userRequestDto) {
 		Tweet tweetToDelete = getTweet(id);
+		CredentialsDto credentialDto = userRequestDto.getCredentials();
 		
-//		if (tweetMapper.verifyCredentials(deleteTweet.getAuthor().getCredentials()) == tweetMapper.verifyCredentials(credentials)) {
-//			deleteTweet.setDeleted(true);
-//			return tweetMapper.entityToDto(deleteTweet);
-//		} else {
-//			throw new NotFoundException("Credentials are not valid");
-//		}
+		if (credentialsMapper.requestDtoToEntity(credentialDto).equals(tweetToDelete.getAuthor().getCredentials())) {
+			tweetToDelete.setDeleted(true);
+			return tweetMapper.entityToDto(tweetRepository.saveAndFlush(tweetToDelete));
+		}
+		throw new NotFoundException("Credentials are not valid");
+	}
+	
+	@Override
+	public TweetResponseDto createTweet(TweetRequestDto tweetRequestDto) {
+		Credentials userCredentials = credentialsMapper.requestDtoToEntity(tweetRequestDto.getCredentials());
+		User currentUser = userService.getUser(userCredentials.getUsername());
 		
-		tweetToDelete.setDeleted(true);
-		return tweetMapper.entityToDto(tweetRepository.saveAndFlush(tweetToDelete));
+		Tweet newTweet = new Tweet();
+		newTweet.setContent(tweetRequestDto.getContent());
+		newTweet.setAuthor(currentUser);
+		List<Hashtag> newHashtags = new ArrayList<Hashtag>();
+		
+		if(!newTweet.getContent().equals(null)) {
+			for (String t : newTweet.getContent().split(" ")) {
+				if (Character.toString(t.charAt(0)) == "#") {
+					Hashtag newTag = new Hashtag();
+					newTag.setLabel(t);
+					newHashtags.add(newTag);
+				}
+			}
+		}
+		
+		newTweet.setHashtags(newHashtags);
+//		System.out.println(newTweet);
+		return tweetMapper.entityToDto(tweetRepository.saveAndFlush(newTweet));
+	}
+
+	@Override
+	public TweetResponseDto createTweetRepost(Long id, TweetRequestDto tweetRequestDto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TweetResponseDto createTweetReply(Long id, String content, TweetRequestDto tweetRequestDto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TweetResponseDto createTweetLike(Long id, TweetRequestDto tweetRequestDto) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	//Endpoint #48 mhu

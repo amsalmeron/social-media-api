@@ -1,26 +1,24 @@
 package com.cooksys.social_team_3.controllers;
 
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.cooksys.social_team_3.dtos.CredentialsDto;
-import com.cooksys.social_team_3.dtos.ProfileDto;
-import com.cooksys.social_team_3.services.UserService;
 
 import com.cooksys.social_team_3.dtos.CredentialsDto;
 import com.cooksys.social_team_3.dtos.TweetResponseDto;
 import com.cooksys.social_team_3.dtos.UserRequestDto;
 import com.cooksys.social_team_3.dtos.UserResponseDto;
 import com.cooksys.social_team_3.services.UserService;
-import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
@@ -29,14 +27,14 @@ public class UserController {
 	
 	private final UserService userService;
 	
-	@PatchMapping("/{username}")
-	public UserResponseDto updateUser(@PathVariable String username, @RequestBody CredentialsDto credentialsDto, @RequestBody ProfileDto profileDto) {			
-		return userService.updateUser(username, credentialsDto, profileDto);
+	@PatchMapping("/@{username}")
+	public UserResponseDto updateUser(@PathVariable String username, @RequestBody UserRequestDto userRequestDto) {			
+		return userService.updateUser(username, userRequestDto);
 	}
 
-	@DeleteMapping("/{username}")
-	public UserResponseDto deleteUser(@PathVariable String username, @PathVariable CredentialsDto credentialsDto) {
-		return userService.deleteUser(username, credentialsDto);
+	@DeleteMapping("/@{username}")
+	public UserResponseDto deleteUser(@PathVariable String username, @RequestBody UserRequestDto userRequestDto) {
+		return userService.deleteUser(username, userRequestDto);
 	}
 
     @PostMapping
@@ -47,7 +45,6 @@ public class UserController {
     @GetMapping
     public List<UserResponseDto> getAllUsers() {
         return userService.getAllUsers();
-
     }
 
     @GetMapping("/@{username}")
