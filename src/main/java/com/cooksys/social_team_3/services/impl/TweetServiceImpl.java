@@ -22,6 +22,7 @@ import com.cooksys.social_team_3.entities.User;
 import com.cooksys.social_team_3.dtos.UserResponseDto;
 import com.cooksys.social_team_3.mappers.UserMapper;
 import com.cooksys.social_team_3.repositories.UserRepository;
+import com.cooksys.social_team_3.dtos.ContextDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -139,6 +140,54 @@ public class TweetServiceImpl implements TweetService {
 		return tweetMapper.entitiesToDtos(replyList);
 
 	}
+	
+	//Endpoint #51 mhu
+	@Override
+	public ContextDto getContextForTweet(Long id) {
+
+		ContextDto contextDto = new ContextDto();
+		Tweet contextTweet = getTweet(id);
+		
+		if (contextTweet.isDeleted() || contextTweet == null) {
+			throw new NotFoundException("Not Found");
+		}
+		
+		Tweet beforeTweet = contextTweet.getInReplyTo();
+		
+		List<Tweet> beforeTweets = new ArrayList<>();
+		List<Tweet> after = contextTweet.getReplies();
+		List<Tweet> afterTweets = new ArrayList<>();
+		
+		afterTweets.addAll(after);
+		
+		while (beforeTweet != null) {
+			beforeTweets.add(beforeTweet);
+			beforeTweet = beforeTweet.getInReplyTo();
+		}
+		for (Tweet tweet : after) {
+			if (tweet.getReplies() != (null)) {
+				afterTweets.addAll(tweet.getReplies());
+			}
+		}
+		for (Tweet tweet : beforeTweets) {
+			if (tweet.isDeleted()) {
+				beforeTweets.remove(tweet);
+			}
+		}
+		for (Tweet tweet : afterTweets) {
+			if (tweet.isDeleted()) {
+				afterTweets.remove(tweet);
+			}
+		}
+		
+		contextDto.setBefore(tweetMapper.entitiesToDtos(beforeTweets));
+		contextDto.setTarget(tweetMapper.entityToDto(contextTweet));
+		contextDto.setAfter(tweetMapper.entitiesToDtos(afterTweets));
+
+		return contextDto;
+		
+	}
+	
 	
 	//Endpoint #52 mhu
 	@Override

@@ -8,6 +8,7 @@ import com.cooksys.social_team_3.entities.Credentials;
 import com.cooksys.social_team_3.entities.Tweet;
 import com.cooksys.social_team_3.dtos.HashtagDto;
 import com.cooksys.social_team_3.dtos.UserResponseDto;
+import com.cooksys.social_team_3.dtos.ContextDto;
 
 public interface TweetService {
 	
@@ -30,5 +31,7 @@ public interface TweetService {
 	List<UserResponseDto> getLikesForTweet(Long id);
 	
 	List<UserResponseDto> getMentionsInTweetById(Long id);
+	
+	ContextDto getContextForTweet(Long id);
 	
 }
