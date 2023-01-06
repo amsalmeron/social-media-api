@@ -15,6 +15,13 @@ import com.cooksys.social_team_3.exceptions.NotFoundException;
 import com.cooksys.social_team_3.mappers.TweetMapper;
 import com.cooksys.social_team_3.repositories.TweetRepository;
 import com.cooksys.social_team_3.services.TweetService;
+import com.cooksys.social_team_3.mappers.HashtagMapper;
+import com.cooksys.social_team_3.entities.Hashtag;
+import com.cooksys.social_team_3.dtos.HashtagDto;
+import com.cooksys.social_team_3.entities.User;
+import com.cooksys.social_team_3.dtos.UserResponseDto;
+import com.cooksys.social_team_3.mappers.UserMapper;
+import com.cooksys.social_team_3.repositories.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +31,9 @@ public class TweetServiceImpl implements TweetService {
 	
 	private final TweetRepository tweetRepository;
 	private final TweetMapper tweetMapper;
+	private final HashtagMapper hashtagMapper;
+	private final UserMapper userMapper;
+	private final UserRepository userRepository;
 	
 	@Override
 	public Tweet getTweet(Long id) {
@@ -96,6 +106,58 @@ public class TweetServiceImpl implements TweetService {
 		
 		tweetToDelete.setDeleted(true);
 		return tweetMapper.entityToDto(tweetRepository.saveAndFlush(tweetToDelete));
+	}
+	
+	//Endpoint #48 mhu
+	@Override
+	public List<UserResponseDto> getMentionsInTweetById(Long id) {
+		
+		Tweet tweet = getTweet(id);
+		List<User> allUsers = userRepository.findAll();
+		List<User> mentionedUsers = new ArrayList<>();
+		for(User u : allUsers) {
+			if(tweet.getContent().contains("@" + u.getCredentials().getUsername()) && !u.isDeleted()) {
+				u.getMentions().add(tweet);
+				tweet.getUsersMentioned().add(u);
+				mentionedUsers.add(u);
+			}
+		}
+		return userMapper.entitiesToDtos(mentionedUsers);
+		
+	}
+	
+	//Endpoint #50 mhu
+	@Override
+	public List<TweetResponseDto> getRepliesToTweetById(Long id) {
+	
+		Tweet tweetReplies = getTweet(id);
+		List<Tweet> replyList = 
+				tweetRepository.findAll()
+				.stream()
+				.filter(tweet -> tweetReplies.getReplies().contains(tweet) && !tweet.isDeleted())
+				.toList();
+		return tweetMapper.entitiesToDtos(replyList);
+
+	}
+	
+	//Endpoint #52 mhu
+	@Override
+	public List<UserResponseDto> getLikesForTweet(Long id) {
+		
+		Tweet tweet = getTweet(id);
+		List<User> likes = tweet.getLikes();
+		return userMapper.entitiesToDtos(likes);
+		
+	}
+	
+	//Endpoint #53 mhu
+	@Override
+	public List<HashtagDto> getAllTagsForTweet(Long id) {
+			
+		List<Hashtag> hashtags = getTweet(id).getHashtags();
+		
+		return hashtagMapper.entitiesToDtos(hashtags);
+			
 	}
 	
 }
