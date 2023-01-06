@@ -1,30 +1,18 @@
 package com.cooksys.social_team_3.services.impl;
 
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
+import com.cooksys.social_team_3.dtos.*;
+import com.cooksys.social_team_3.entities.Tweet;
+import com.cooksys.social_team_3.entities.User;
 import com.cooksys.social_team_3.exceptions.BadRequestException;
 import com.cooksys.social_team_3.exceptions.NotFoundException;
-import com.cooksys.social_team_3.dtos.CredentialsDto;
-import com.cooksys.social_team_3.dtos.ProfileDto;
-import com.cooksys.social_team_3.dtos.UserResponseDto;
-import com.cooksys.social_team_3.entities.User;
 import com.cooksys.social_team_3.mappers.CredentialsMapper;
 import com.cooksys.social_team_3.mappers.ProfileMapper;
-import com.cooksys.social_team_3.dtos.TweetResponseDto;
-import com.cooksys.social_team_3.dtos.UserRequestDto;
-import com.cooksys.social_team_3.entities.Tweet;
-
-import com.cooksys.social_team_3.exceptions.NotFoundException;
-
 import com.cooksys.social_team_3.mappers.TweetMapper;
-
 import com.cooksys.social_team_3.mappers.UserMapper;
 import com.cooksys.social_team_3.repositories.UserRepository;
-import com.cooksys.social_team_3.services.UserService;
 import com.cooksys.social_team_3.services.Deletables;
+import com.cooksys.social_team_3.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -81,7 +69,7 @@ public class UserServiceImpl implements UserService {
 
     @Override //GET Users
     public List<UserResponseDto> getAllUsers() {
-        return userMapper.entitiesDto(userRepository.findAllByDeleted(false));
+        return userMapper.entitiesToDtos(userRepository.findAllByDeleted(false));
     }
 
     @Override //GET users/@{username}
@@ -95,12 +83,12 @@ public class UserServiceImpl implements UserService {
 
     @Override //GET users/@{username}/following
     public List<UserResponseDto> getFollowing(String username) {
-        return userMapper.entitiesDto(removeDeleted(checkUsername(username).getFollowing()));
+        return userMapper.entitiesToDtos(removeDeleted(checkUsername(username).getFollowing()));
     }
 
     @Override //GET users/@{username}/followers
     public List<UserResponseDto> getFollowers(String username) {
-        return userMapper.entitiesDto(removeDeleted(checkUsername(username).getFollowers()));
+        return userMapper.entitiesToDtos(removeDeleted(checkUsername(username).getFollowers()));
     }
 
     @Override //GET users/@{username}/mentions
