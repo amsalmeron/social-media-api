@@ -1,13 +1,11 @@
 package com.cooksys.social_team_3.mappers;
 
-import com.cooksys.social_team_3.dtos.UserRequestDto;
-import com.cooksys.social_team_3.dtos.UserResponseDto;
-import com.cooksys.social_team_3.entities.User;
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.util.List;
-
+import com.cooksys.social_team_3.dtos.UserRequestDto;
 import com.cooksys.social_team_3.dtos.UserResponseDto;
 import com.cooksys.social_team_3.entities.User;
 
