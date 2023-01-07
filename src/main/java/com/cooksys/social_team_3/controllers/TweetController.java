@@ -50,6 +50,7 @@ public class TweetController {
 	@PostMapping("/{id}/like")
 	public void createTweetLike(@PathVariable Long id, @RequestBody TweetRequestDto tweetRequestDto) {
 		tweetService.createTweetLike(id, tweetRequestDto);
+
 	}
 	
 	@GetMapping("/{id}/reposts")

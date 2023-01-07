@@ -115,7 +115,9 @@ public class TweetServiceImpl implements TweetService {
 		newTweet.setContent(tweetRequestDto.getContent());
 		newTweet.setAuthor(currentUser);
 		List<Hashtag> newHashtags = new ArrayList<Hashtag>();
+
 		List<Tweet> allMentions = new ArrayList<Tweet>();
+
 		
 		if(!newTweet.getContent().equals(null)) {
 			for (String t : newTweet.getContent().split(" ")) {
@@ -142,11 +144,13 @@ public class TweetServiceImpl implements TweetService {
 			}
 		}
 		newTweet.setHashtags(newHashtags);
+
 		return tweetMapper.entityToDto(tweetRepository.saveAndFlush(newTweet));
 	}
 
 	@Override
 	public TweetResponseDto createTweetRepost(Long id, TweetRequestDto tweetRequestDto) {
+
 		Credentials userCredentials = credentialsMapper.requestDtoToEntity(tweetRequestDto.getCredentials());
 		User currentUser = userService.getUser(userCredentials.getUsername());
 		Tweet repostTweet = getTweet(id);
@@ -209,6 +213,7 @@ public class TweetServiceImpl implements TweetService {
 		allLikes = currentUser.getLikedTweets();
 		allLikes.add(tweetToLike);
 		userRepository.saveAndFlush(currentUser);
+
 	}
 	
 	//Endpoint #48 mhu

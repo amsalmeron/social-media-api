@@ -1,6 +1,5 @@
 package com.cooksys.social_team_3.controllers;
 
-
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +15,7 @@ import com.cooksys.social_team_3.dtos.CredentialsDto;
 import com.cooksys.social_team_3.dtos.TweetResponseDto;
 import com.cooksys.social_team_3.dtos.UserRequestDto;
 import com.cooksys.social_team_3.dtos.UserResponseDto;
+import com.cooksys.social_team_3.entities.Credentials;
 import com.cooksys.social_team_3.services.UserService;
 
 import lombok.AllArgsConstructor;
@@ -78,13 +78,13 @@ public class UserController {
     }
 
     @PostMapping("@{username}/follow")
-    public void followUser(@RequestBody CredentialsDto credentialsDto, @PathVariable String username){
-        userService.followUser(credentialsDto, username);
+    public void followUser(@PathVariable String username, @RequestBody Credentials credential) {
+        userService.followUser(username, credential);
     }
 
     @PostMapping("@{username}/unfollow")
-    public void unfollowUser(@RequestBody CredentialsDto credentialsDto, @PathVariable String username) {
-        userService.unfollowUser(credentialsDto, username);
+    public void unfollowUser(@PathVariable String username, @RequestBody Credentials credential) {
+        userService.unfollowUser(username, credential);
     }
 
 }

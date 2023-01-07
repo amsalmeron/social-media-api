@@ -10,6 +10,7 @@ import com.cooksys.social_team_3.dtos.UserResponseDto;
 import com.cooksys.social_team_3.entities.User;
 
 
+
 @Mapper(componentModel = "spring", uses = { ProfileMapper.class, CredentialsMapper.class })
 public interface UserMapper {
 

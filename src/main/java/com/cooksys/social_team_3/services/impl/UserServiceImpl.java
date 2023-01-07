@@ -24,6 +24,9 @@ import com.cooksys.social_team_3.mappers.UserMapper;
 import com.cooksys.social_team_3.repositories.UserRepository;
 import com.cooksys.social_team_3.services.Deletables;
 import com.cooksys.social_team_3.services.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -71,7 +74,14 @@ public class UserServiceImpl implements UserService {
 
     @Override //POST Users
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
-        return null;
+        createUserRequest(userRequestDto);
+        String username = userRequestDto.getCredentials().getUsername();
+
+        User userToSave = userMapper.requestDtoToEntity(userRequestDto);
+        Optional<User> optionalUser = userRepository.findByCredentials_Username(username);
+        User user = optionalUser.map(this::createUserExists).orElseGet(() -> createUserNotExists(userToSave));
+
+        return userMapper.entityToResponseDto(user);
     }
 
     @Override //GET Users
@@ -92,11 +102,11 @@ public class UserServiceImpl implements UserService {
     public List<UserResponseDto> getFollowing(String username) {
         return userMapper.entitiesToDtos(removeDeleted(checkUsername(username).getFollowing()));
     }
-    
+
     @Override // GET users/@{username}/followers
 	public List<UserResponseDto> getFollowers(String username) {
 		return userMapper.entitiesToDtos(removeDeleted(checkUsername(username).getFollowers()));
-	}
+    }
 
     @Override //GET users/@{username}/mentions
     public List<TweetResponseDto> getMentions(String username) {
@@ -120,13 +130,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void followUser(CredentialsDto credentialsDto, String username) {
-
+    public void followUser(String username, Credentials credential) {
+        User toBeFollowed = checkUsername(username);
+        User follower = checkCredentials(credential);
+        if (isActive(toBeFollowed))
+            throw new NotFoundException("User not found");
+        if (follower.getFollowing().contains(toBeFollowed))
+            throw new BadRequestException("User is already followed");
+        follower.addFollowing(toBeFollowed);
+        userRepository.saveAndFlush(follower);
+        userRepository.saveAndFlush(toBeFollowed);
     }
 
     @Override
-    public void unfollowUser(CredentialsDto credentialsDto, String username) {
-
+    public void unfollowUser(String username, Credentials credential) {
+        User toBeUnfollowed = checkUsername(username);
+        User follower = checkCredentials(credential);
+        if (isActive(toBeUnfollowed))
+            throw new NotFoundException("User not found");
+        if (!follower.getFollowing().contains(toBeUnfollowed))
+            throw new BadRequestException("User is not being followed");
+        follower.removeFollowing(toBeUnfollowed);
+        userRepository.saveAndFlush(follower);
+        userRepository.saveAndFlush(toBeUnfollowed);
     }
 
 
@@ -138,6 +164,13 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new NotFoundException("This account does not exist");
         }
+    }
+
+    private User checkCredentials(Credentials credential) {
+        Optional<User> userOptional = userRepository.findByCredentials(credential);
+        if (userOptional.isEmpty() || userOptional.get().isDeleted())
+            throw new BadRequestException("Incorrect credentials");
+        return userOptional.get();
     }
 
     private <Test extends Deletables> List<Test> removeDeleted(List<Test> toFilter) {
@@ -156,5 +189,31 @@ public class UserServiceImpl implements UserService {
 		Collections.reverse(result);
 		return result;
 	}
+
+    private boolean isActive(User user) {
+        return user == null || user.isDeleted();
+    }
+
+    private void createUserRequest(UserRequestDto userRequestDto) {
+        if (userRequestDto.getCredentials() == null || userRequestDto.getCredentials().getUsername() == null
+                || userRequestDto.getCredentials().getPassword() == null || userRequestDto.getProfile() == null
+                || userRequestDto.getProfile().getEmail() == null) {
+            throw new BadRequestException("All fields must be completed");
+        }
+    }
+
+    private User createUserExists(User user) {
+        if (user.isDeleted()) {
+            user.setDeleted(false);
+            userRepository.saveAndFlush(user);
+            return user;
+        }
+        throw new BadRequestException("User already exists");
+    }
+
+    private User createUserNotExists(User userToSave) {
+        userRepository.saveAndFlush(userToSave);
+        return userToSave;
+    }
 
 }
