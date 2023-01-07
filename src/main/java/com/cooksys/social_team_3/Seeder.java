@@ -1,12 +1,17 @@
 package com.cooksys.social_team_3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.cooksys.social_team_3.entities.Credentials;
+import com.cooksys.social_team_3.entities.Hashtag;
 import com.cooksys.social_team_3.entities.Profile;
 import com.cooksys.social_team_3.entities.Tweet;
 import com.cooksys.social_team_3.entities.User;
+import com.cooksys.social_team_3.repositories.HashtagRepository;
 import com.cooksys.social_team_3.repositories.TweetRepository;
 import com.cooksys.social_team_3.repositories.UserRepository;
 
@@ -18,9 +23,11 @@ public class Seeder implements CommandLineRunner {
 
 	private final UserRepository userRepository;
 	private final TweetRepository tweetRepository;
+	private final HashtagRepository hashtagRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
+
 		Credentials credsOne = new Credentials();
 		credsOne.setUsername("AntonioUser");
 		credsOne.setPassword("password");
@@ -58,6 +65,17 @@ public class Seeder implements CommandLineRunner {
 		tweet2.setContent("First Tweet!");
 		tweet2.setRepostOf(tweet1);
 		tweetRepository.save(tweet2);
+		
+		Tweet tweet3 = new Tweet();
+		tweet3.setAuthor(user2);
+		tweet3.setContent("Another Tweet! #cool");
+		List<Hashtag> hashtags = new ArrayList<Hashtag>();
+		Hashtag tagOne = new Hashtag();
+		tagOne.setLabel("cool");
+		hashtagRepository.save(tagOne);
+		hashtags.add(tagOne);
+		tweet3.setHashtags(hashtags);
+		tweetRepository.save(tweet3);
 		
 	}
 }

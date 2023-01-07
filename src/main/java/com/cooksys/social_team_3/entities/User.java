@@ -64,4 +64,14 @@ public class User implements Deletables {
     @ManyToMany(mappedBy = "usersMentioned")
     private List<Tweet> mentions;
 
+    public void removeFollowing(User following) {
+        this.following.remove(following);
+        following.getFollowers().remove(this);
+    }
+
+    public void addFollowing(User following) {
+        this.following.add(following);
+        following.getFollowers().add(this);
+    }
+
 }

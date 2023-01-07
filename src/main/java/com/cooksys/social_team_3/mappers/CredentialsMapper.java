@@ -9,4 +9,6 @@ import com.cooksys.social_team_3.entities.Credentials;
 public interface CredentialsMapper {
 
 	Credentials requestDtoToEntity(CredentialsDto credentialsDto);
+	
+	CredentialsDto entityToDto(Credentials credentials);
 }
