@@ -28,6 +28,7 @@ public class Seeder implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
+
 //		Credentials credsOne = new Credentials();
 //		credsOne.setUsername("AntonioUser");
 //		credsOne.setPassword("password");
@@ -76,6 +77,6 @@ public class Seeder implements CommandLineRunner {
 //		hashtags.add(tagOne);
 //		tweet3.setHashtags(hashtags);
 //		tweetRepository.save(tweet3);
-		
+
 	}
 }
