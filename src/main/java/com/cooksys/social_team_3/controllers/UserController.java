@@ -1,9 +1,10 @@
 package com.cooksys.social_team_3.controllers;
 
-import com.cooksys.social_team_3.dtos.CredentialsDto;
+
 import com.cooksys.social_team_3.dtos.TweetResponseDto;
 import com.cooksys.social_team_3.dtos.UserRequestDto;
 import com.cooksys.social_team_3.dtos.UserResponseDto;
+import com.cooksys.social_team_3.entities.Credentials;
 import com.cooksys.social_team_3.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,18 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/users")
 public class UserController {
-    private UserService userService;
+	
+	private final UserService userService;
+	
+	@PatchMapping("/@{username}")
+	public UserResponseDto updateUser(@PathVariable String username, @RequestBody UserRequestDto userRequestDto) {			
+		return userService.updateUser(username, userRequestDto);
+	}
+
+	@DeleteMapping("/@{username}")
+	public UserResponseDto deleteUser(@PathVariable String username, @RequestBody UserRequestDto userRequestDto) {
+		return userService.deleteUser(username, userRequestDto);
+	}
 
     @PostMapping
     public UserResponseDto createUser(@RequestBody UserRequestDto userRequestDto){
@@ -24,7 +36,6 @@ public class UserController {
     @GetMapping
     public List<UserResponseDto> getAllUsers() {
         return userService.getAllUsers();
-
     }
 
     @GetMapping("/@{username}")
@@ -58,13 +69,13 @@ public class UserController {
     }
 
     @PostMapping("@{username}/follow")
-    public void followUser(@RequestBody CredentialsDto credentialsDto, @PathVariable String username){
-        userService.followUser(credentialsDto, username);
+    public void followUser(@PathVariable String username, @RequestBody Credentials credential) {
+        userService.followUser(username, credential);
     }
 
     @PostMapping("@{username}/unfollow")
-    public void unfollowUser(@RequestBody CredentialsDto credentialsDto, @PathVariable String username) {
-        userService.unfollowUser(credentialsDto, username);
+    public void unfollowUser(@PathVariable String username, @RequestBody Credentials credential) {
+        userService.unfollowUser(username, credential);
     }
 
 }
