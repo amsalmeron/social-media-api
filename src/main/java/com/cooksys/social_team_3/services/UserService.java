@@ -3,14 +3,15 @@ package com.cooksys.social_team_3.services;
 import java.util.List;
 
 import com.cooksys.social_team_3.dtos.*;
+import com.cooksys.social_team_3.entities.Credentials;
 import com.cooksys.social_team_3.entities.User;
 
 public interface UserService {
-	UserResponseDto updateUser(String username, UserRequestDto userRequestDto);
+	  UserResponseDto updateUser(String username, UserRequestDto userRequestDto);
 
-	UserResponseDto deleteUser(String username, UserRequestDto userRequestDto);
+	  UserResponseDto deleteUser(String username, UserRequestDto userRequestDto);
 
-	User getUser(String username);
+	  User getUser(String username);
 
     UserResponseDto createUser(UserRequestDto userRequestDto);
 
