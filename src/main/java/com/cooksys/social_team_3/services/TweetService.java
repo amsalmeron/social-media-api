@@ -26,9 +26,9 @@ public interface TweetService {
 
 	TweetResponseDto createTweetRepost(Long id, TweetRequestDto tweetRequestDto);
 
-	TweetResponseDto createTweetReply(Long id, String content, TweetRequestDto tweetRequestDto);
+	TweetResponseDto createTweetReply(Long id, TweetRequestDto tweetRequestDto);
 
-	TweetResponseDto createTweetLike(Long id, TweetRequestDto tweetRequestDto);
+	void createTweetLike(Long id, TweetRequestDto tweetRequestDto);
 	
 	List<HashtagDto> getAllTagsForTweet(Long id);
 	
