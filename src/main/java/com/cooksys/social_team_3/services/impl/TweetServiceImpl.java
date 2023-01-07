@@ -115,6 +115,7 @@ public class TweetServiceImpl implements TweetService {
 		newTweet.setContent(tweetRequestDto.getContent());
 		newTweet.setAuthor(currentUser);
 		List<Hashtag> newHashtags = new ArrayList<Hashtag>();
+		List<Tweet> allMentions = new ArrayList<Tweet>();
 		
 		if(!newTweet.getContent().equals(null)) {
 			for (String t : newTweet.getContent().split(" ")) {
@@ -124,29 +125,90 @@ public class TweetServiceImpl implements TweetService {
 					newHashtags.add(newTag);
 				}
 			}
+			
+			for (String n : newTweet.getContent().split(" ")) {
+				if (Character.toString(n.charAt(0)).equals("@")) {
+					String name = new String();
+					name = n.substring(1);
+					if(!userService.getUser(name).getId().equals(null)) {
+						allMentions = userService.getUser(name).getMentions();
+						allMentions.add(newTweet);
+						userService.getUser(name).setMentions(allMentions);
+						System.out.println(name);
+						System.out.println(currentUser.getId());
+						userRepository.save(currentUser);
+					}
+				}
+			}
 		}
-		
 		newTweet.setHashtags(newHashtags);
-//		System.out.println(newTweet);
 		return tweetMapper.entityToDto(tweetRepository.saveAndFlush(newTweet));
 	}
 
 	@Override
 	public TweetResponseDto createTweetRepost(Long id, TweetRequestDto tweetRequestDto) {
-		// TODO Auto-generated method stub
-		return null;
+		Credentials userCredentials = credentialsMapper.requestDtoToEntity(tweetRequestDto.getCredentials());
+		User currentUser = userService.getUser(userCredentials.getUsername());
+		Tweet repostTweet = getTweet(id);
+		
+		Tweet newTweet = new Tweet();
+		newTweet.setAuthor(currentUser);
+		newTweet.setContent(repostTweet.getContent());
+		newTweet.setRepostOf(repostTweet);		
+		
+		return tweetMapper.entityToDto(tweetRepository.saveAndFlush(newTweet));
 	}
 
 	@Override
-	public TweetResponseDto createTweetReply(Long id, String content, TweetRequestDto tweetRequestDto) {
-		// TODO Auto-generated method stub
-		return null;
+	public TweetResponseDto createTweetReply(Long id, TweetRequestDto tweetRequestDto) {
+		Credentials userCredentials = credentialsMapper.requestDtoToEntity(tweetRequestDto.getCredentials());
+		User currentUser = userService.getUser(userCredentials.getUsername());
+		Tweet replyToTweet = getTweet(id);
+		
+		Tweet newReply = new Tweet();
+		newReply.setAuthor(currentUser);
+		newReply.setContent(tweetRequestDto.getContent());
+		newReply.setInReplyTo(replyToTweet);
+		
+		List<Hashtag> newHashtags = new ArrayList<Hashtag>();
+		
+		if(!newReply.getContent().equals(null)) {
+			for (String t : newReply.getContent().split(" ")) {
+				if (Character.toString(t.charAt(0)) == "#") {
+					Hashtag newTag = new Hashtag();
+					newTag.setLabel(t);
+					newHashtags.add(newTag);
+				}
+			}
+			
+			for (String n : newReply.getContent().split(" ")) {
+				if (Character.toString(n.charAt(0)) == "@") {
+					String name = new String();
+					name = n.substring(1);
+					if(!userService.getUser(name).getId().equals(null)) {
+						List<Tweet> allMentions = new ArrayList<Tweet>();
+						allMentions = userService.getUser(name).getMentions();
+						allMentions.add(newReply);
+						userRepository.saveAndFlush(currentUser);
+					}
+				}
+			}
+		}
+		
+		
+		newReply.setHashtags(newHashtags);
+		return tweetMapper.entityToDto(tweetRepository.saveAndFlush(newReply));
 	}
 
 	@Override
-	public TweetResponseDto createTweetLike(Long id, TweetRequestDto tweetRequestDto) {
-		// TODO Auto-generated method stub
-		return null;
+	public void createTweetLike(Long id, TweetRequestDto tweetRequestDto) {
+		Credentials userCredentials = credentialsMapper.requestDtoToEntity(tweetRequestDto.getCredentials());
+		User currentUser = userService.getUser(userCredentials.getUsername());
+		Tweet tweetToLike = getTweet(id);	
+		List<Tweet> allLikes = new ArrayList<Tweet>();
+		allLikes = currentUser.getLikedTweets();
+		allLikes.add(tweetToLike);
+		userRepository.saveAndFlush(currentUser);
 	}
 	
 	//Endpoint #48 mhu
