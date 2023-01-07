@@ -1,5 +1,14 @@
 package com.cooksys.social_team_3.services.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.cooksys.social_team_3.dtos.CredentialsDto;
 import com.cooksys.social_team_3.dtos.TweetResponseDto;
 import com.cooksys.social_team_3.dtos.UserRequestDto;
 import com.cooksys.social_team_3.dtos.UserResponseDto;
@@ -18,7 +27,8 @@ import com.cooksys.social_team_3.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
@@ -96,7 +106,7 @@ public class UserServiceImpl implements UserService {
     @Override // GET users/@{username}/followers
 	public List<UserResponseDto> getFollowers(String username) {
 		return userMapper.entitiesToDtos(removeDeleted(checkUsername(username).getFollowers()));
-	}
+    }
 
     @Override //GET users/@{username}/mentions
     public List<TweetResponseDto> getMentions(String username) {

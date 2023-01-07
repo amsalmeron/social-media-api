@@ -37,22 +37,20 @@ public class TweetController {
 		return tweetService.createTweet(tweetRequestDto);
 	}
 	
-	//Unfinished endpoint
 	@PostMapping("/{id}/repost")
 	public TweetResponseDto createTweetRepost(@PathVariable Long id, @RequestBody TweetRequestDto tweetRequestDto) {
 		return tweetService.createTweetRepost(id, tweetRequestDto);
 	}
 	
-	//Unfinished endpoint
 	@PostMapping("/{id}/reply")
-	public TweetResponseDto createTweetReply(@PathVariable Long id, @RequestBody String content, @RequestBody TweetRequestDto tweetRequestDto) {
-		return tweetService.createTweetReply(id, content, tweetRequestDto);
+	public TweetResponseDto createTweetReply(@PathVariable Long id, @RequestBody TweetRequestDto tweetRequestDto) {
+		return tweetService.createTweetReply(id, tweetRequestDto);
 	}
 	
-	//Unfinished endpoint
 	@PostMapping("/{id}/like")
-	public TweetResponseDto createTweetReply(@PathVariable Long id, @RequestBody TweetRequestDto tweetRequestDto) {
-		return tweetService.createTweetLike(id, tweetRequestDto);
+	public void createTweetLike(@PathVariable Long id, @RequestBody TweetRequestDto tweetRequestDto) {
+		tweetService.createTweetLike(id, tweetRequestDto);
+
 	}
 	
 	@GetMapping("/{id}/reposts")

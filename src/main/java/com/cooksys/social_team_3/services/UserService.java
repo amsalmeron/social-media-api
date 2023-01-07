@@ -1,12 +1,9 @@
 package com.cooksys.social_team_3.services;
 
-import com.cooksys.social_team_3.dtos.TweetResponseDto;
-import com.cooksys.social_team_3.dtos.UserRequestDto;
-import com.cooksys.social_team_3.dtos.UserResponseDto;
-import com.cooksys.social_team_3.entities.Credentials;
-import com.cooksys.social_team_3.entities.User;
-
 import java.util.List;
+
+import com.cooksys.social_team_3.dtos.*;
+import com.cooksys.social_team_3.entities.User;
 
 public interface UserService {
 	UserResponseDto updateUser(String username, UserRequestDto userRequestDto);
@@ -34,4 +31,5 @@ public interface UserService {
     void followUser(String username, Credentials credential);
 
     void unfollowUser(String username, Credentials credential);
+    
 }
