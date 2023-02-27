@@ -1,16 +1,18 @@
 package com.cooksys.social_team_3.controllers;
 
 
-import com.cooksys.social_team_3.dtos.ErrorDto;
-import com.cooksys.social_team_3.exceptions.BadRequestException;
-import com.cooksys.social_team_3.exceptions.NotAuthorizedException;
-import com.cooksys.social_team_3.exceptions.NotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.cooksys.social_team_3.dtos.ErrorDto;
+import com.cooksys.social_team_3.exceptions.BadRequestException;
+import com.cooksys.social_team_3.exceptions.NotAuthorizedException;
+import com.cooksys.social_team_3.exceptions.NotFoundException;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @ControllerAdvice(basePackages = {"com.cooksys.social_team_3"})
 @ResponseBody

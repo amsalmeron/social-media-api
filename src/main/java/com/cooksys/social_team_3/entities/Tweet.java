@@ -1,5 +1,10 @@
 package com.cooksys.social_team_3.entities;
 
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.cooksys.social_team_3.services.Deletables;
 
 import jakarta.persistence.Column;
@@ -11,13 +16,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.sql.Timestamp;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor

@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.cooksys.social_team_3.dtos.CredentialsDto;
 import com.cooksys.social_team_3.dtos.TweetResponseDto;
 import com.cooksys.social_team_3.dtos.UserRequestDto;
 import com.cooksys.social_team_3.dtos.UserResponseDto;
@@ -24,9 +23,6 @@ import com.cooksys.social_team_3.mappers.UserMapper;
 import com.cooksys.social_team_3.repositories.UserRepository;
 import com.cooksys.social_team_3.services.Deletables;
 import com.cooksys.social_team_3.services.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 
 import lombok.RequiredArgsConstructor;
 
@@ -54,21 +50,31 @@ public class UserServiceImpl implements UserService {
 	public UserResponseDto updateUser(String username, UserRequestDto userRequestDto) {
 		User userToUpdate = getUser(username);
 		Credentials credentialCheck = credentialsMapper.requestDtoToEntity(userRequestDto.getCredentials());
-		if (credentialCheck.equals(userToUpdate.getCredentials())) {
-			userToUpdate.setProfile(profileMapper.requestDtoToEntity(userRequestDto.getProfile()));
-			return userMapper.entityToResponseDto(userRepository.saveAndFlush(userToUpdate));
+		
+		if(credentialCheck != null && 
+				userToUpdate != null && 
+				userRequestDto.getProfile() != null &&
+				userRequestDto.getProfile().getEmail() != null){
+			if (credentialCheck.equals(userToUpdate.getCredentials())){
+				userToUpdate.setProfile(profileMapper.requestDtoToEntity(userRequestDto.getProfile()));
+				return userMapper.entityToResponseDto(userRepository.saveAndFlush(userToUpdate));
+			}
 		}
-		throw new BadRequestException("Unable to update profile, credentials are not valid.");
+		
+		throw new BadRequestException("Unable to update profile, credentials/profile are not valid.");
 	}
 
 	@Override
 	public UserResponseDto deleteUser(String username, UserRequestDto userRequestDto){
 		User userToDelete = getUser(username);
 		Credentials credentialCheck = credentialsMapper.requestDtoToEntity(userRequestDto.getCredentials());
-		if (credentialCheck.equals(userToDelete.getCredentials())) {
-			userToDelete.setDeleted(true);
-			return userMapper.entityToResponseDto(userRepository.saveAndFlush(userToDelete));
+		if(credentialCheck != null && userToDelete != null) {
+			if (credentialCheck.equals(userToDelete.getCredentials())) {
+				userToDelete.setDeleted(true);
+				return userMapper.entityToResponseDto(userRepository.saveAndFlush(userToDelete));
+			}
 		}
+		
 		throw new BadRequestException("User credentials are invalid.");
 	}
 

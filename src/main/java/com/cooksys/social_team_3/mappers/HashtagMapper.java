@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 
-import com.cooksys.social_team_3.entities.Hashtag;
 import com.cooksys.social_team_3.dtos.HashtagDto;
+import com.cooksys.social_team_3.entities.Hashtag;
 
 @Mapper(componentModel = "spring", uses = { HashtagMapper.class })
 public interface HashtagMapper {

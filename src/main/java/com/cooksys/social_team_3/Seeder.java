@@ -1,16 +1,8 @@
 package com.cooksys.social_team_3;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.cooksys.social_team_3.entities.Credentials;
-import com.cooksys.social_team_3.entities.Hashtag;
-import com.cooksys.social_team_3.entities.Profile;
-import com.cooksys.social_team_3.entities.Tweet;
-import com.cooksys.social_team_3.entities.User;
 import com.cooksys.social_team_3.repositories.HashtagRepository;
 import com.cooksys.social_team_3.repositories.TweetRepository;
 import com.cooksys.social_team_3.repositories.UserRepository;

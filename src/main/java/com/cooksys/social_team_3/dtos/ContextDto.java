@@ -1,9 +1,9 @@
 package com.cooksys.social_team_3.dtos;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @NoArgsConstructor
 @Data
